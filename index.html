@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Intraday Decision Dashboard</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <h1>Intraday Decision Dashboard</h1>
+      <p class="subtitle">Static GitHub Pages dashboard</p>
+    </div>
+  </header>
+
+  <main class="page">
+    <aside class="sidebar">
+      <section class="panel">
+        <h2>Filters</h2>
+
+        <label for="splitFilter">Split</label>
+        <select id="splitFilter">
+          <option value="all">All</option>
+        </select>
+
+        <label for="contractFilter">Contract</label>
+        <select id="contractFilter">
+          <option value="all">All</option>
+        </select>
+
+        <label for="xaiFilter">XAI bucket</label>
+        <select id="xaiFilter">
+          <option value="all">All</option>
+        </select>
+
+        <label for="signalFilter">Signal bucket</label>
+        <select id="signalFilter">
+          <option value="all">All</option>
+        </select>
+
+        <label for="confidenceFilter">Confidence bucket</label>
+        <select id="confidenceFilter">
+          <option value="all">All</option>
+        </select>
+
+        <label for="dateFrom">Date from</label>
+        <input id="dateFrom" type="date" />
+
+        <label for="dateTo">Date to</label>
+        <input id="dateTo" type="date" />
+
+        <button id="resetFiltersBtn" class="btn">Reset filters</button>
+      </section>
+
+      <section class="panel">
+        <h2>Sample browser</h2>
+
+        <label for="sampleSelect">Sample</label>
+        <select id="sampleSelect"></select>
+
+        <div class="sample-meta" id="sampleMeta"></div>
+      </section>
+    </aside>
+
+    <section class="content">
+      <section class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-label">Rows</div>
+          <div class="kpi-value" id="kpiRows">-</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Accuracy</div>
+          <div class="kpi-value" id="kpiAccuracy">-</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Avg P(up)</div>
+          <div class="kpi-value" id="kpiPup">-</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Avg forward return</div>
+          <div class="kpi-value" id="kpiForwardReturn">-</div>
+        </div>
+      </section>
+
+      <section class="charts-grid">
+        <div class="panel chart-panel">
+          <h2>P(up) over time</h2>
+          <div id="probabilityChart" class="chart"></div>
+        </div>
+
+        <div class="panel chart-panel">
+          <h2>Confusion matrix</h2>
+          <div id="confusionChart" class="chart"></div>
+        </div>
+
+        <div class="panel chart-panel">
+          <h2>Accuracy by contract</h2>
+          <div id="contractChart" class="chart"></div>
+        </div>
+
+        <div class="panel chart-panel">
+          <h2>Signal bucket counts</h2>
+          <div id="signalChart" class="chart"></div>
+        </div>
+
+        <div class="panel chart-panel">
+          <h2>XAI bucket share</h2>
+          <div id="xaiChart" class="chart"></div>
+        </div>
+
+        <div class="panel chart-panel">
+          <h2>Forward return distribution</h2>
+          <div id="returnChart" class="chart"></div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2>Selected sample images</h2>
+        <div class="image-grid">
+          <div class="image-card">
+            <h3>Raw image</h3>
+            <img id="rawImage" alt="Raw sample" />
+            <div class="image-fallback" id="rawImageFallback"></div>
+          </div>
+          <div class="image-card">
+            <h3>Raw overlay</h3>
+            <img id="overlayImage" alt="Overlay sample" />
+            <div class="image-fallback" id="overlayImageFallback"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2>Filtered table</h2>
+        <div class="table-wrap">
+          <table id="dataTable">
+            <thead>
+              <tr>
+                <th>sample_id</th>
+                <th>anchor_idx</th>
+                <th>anchor_time</th>
+                <th>trade_date</th>
+                <th>contract</th>
+                <th>split</th>
+                <th>label</th>
+                <th>pred</th>
+                <th>cnn_p_up</th>
+                <th>forward_return</th>
+                <th>xai_bucket</th>
+                <th>signal_bucket</th>
+                <th>confidence_bucket</th>
+                <th>is_correct</th>
+                <th>error_type</th>
+              </tr>
+            </thead>
+            <tbody id="dataTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
